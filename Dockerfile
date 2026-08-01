@@ -1,21 +1,18 @@
-
 ARG NODE_VERSION=26.3.0
 
-FROM node:${NODE_VERSION}-alpine
-
-RUN apk add --no-cache git
-
-ENV NODE_ENV=development
-
-
-WORKDIR /Malhi_Sukhpreet_ui_garden_build_checks
+FROM node:${NODE_VERSION}-alpine AS build
+WORKDIR /malhi_sukhpreet_final_site
 
 COPY package*.json ./
-
 RUN npm install --legacy-peer-deps
 
 COPY . .
+RUN npm run build
 
-EXPOSE 8018
+FROM nginx:alpine
 
-CMD ["npm", "run", "storybook", "--", "-p", "8018"]
+COPY --from=build /malhi_sukhpreet_final_site/build /usr/share/nginx/html
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
