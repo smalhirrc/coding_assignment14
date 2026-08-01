@@ -25,7 +25,6 @@ const StyledButton = styled.button<{
 const Button = ({ label, backgroundColor, disabled, onClick }: ButtonProps) => {
   return (
     <div>
-      <p>hello
       <StyledButton
         backgroundColor={backgroundColor}
         disabled={disabled}
